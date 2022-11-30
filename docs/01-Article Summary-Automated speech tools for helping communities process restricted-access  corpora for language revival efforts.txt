@@ -1,0 +1,74 @@
+Article Summary
+Automated speech tools for helping communities process restricted-access corpora for language revival efforts
+
+Contributions
+	1. A framework that does not require a lot of computational power to train.
+	2. privacy-preserving work­flow to widen both bottlenecks for recordings where speech in the endangered language is intermixed with a more widely-used language such as English for meta-linguistic commen­tary and questions.
+	3. A framework which integrates VAD, SLI, and ASR to transcribe meta-linguistic content.
+	4. workflow reduces metalanguage transcrip­tion time by 20% even with minimal amounts of annotated training data.
+	5. SLI and ASR experiments to determine the minimum amounts of annotated data required to implement this workflow
+
+Research Questions
+	1. How many utterances of English and Muruwari are needed to adapt an off-the-shelf SLI system? 
+	2. Is it possible to make use of such a system without compute ­intensive adaptation methods requiring a graphics processing unit (GPU)? 
+	3. What amount of transcribed speech is sufficient to reliably achieve better than off-the­ shelf performance?
+	4. Using the same amount of transcribed speech, to what extent can ASR sys­tem performance be further increased when sup­plemented with a language model trained on ex­ternal texts?
+
+Pipeline
+	1. Leverage voice activity detection (VAD) to detect speech regions
+	2. Use spoken language identifica­tion (SLI) to distinguish between Muruwari and English regions
+	3. Use automatic speech recog­nition (ASR) to transcribe the English.
+
+Data Set Location
+	• The data set is private (Muruwari) and not able to be release without permission. Currently being stored at the Australian Institute of Aboriginal and Torres Strait Islander Studies. Access to these materials depend on permission from the custodian and Muruwari elder, Roy Barker (author RB; grandson of Jimmie Barker).
+
+Model Locations
+	• VAD: https://github.com/snakers4/silero-vad
+	• SLI: 
+	• ASR: https://huggingface.co/facebook/wav2vec2-large-robust-ft-swbd-300h :: For each recording, we used the off-the-shelf Robust wav2vec 2.0 (Hsu et al., 2021), to sim­ply transcribe all speech regions detected by the Silero VAD system
+
+GitHub Repos
+	Article Repo
+	• https://github.com/CoEDL/vad-sli-asr
+		• Contains: model training/deployment scripts, and data preparation instructions
+
+	VAD - voice activity detection
+	• https://github.com/snakers4/silero-vad
+
+VAD Training
+	Preprocessing Steps
+	NOTE: The audio has frequent inter- and intra-phrase pauses. The VAD will separate these into sentence fragments.
+
+SLI Training
+	1. First extract speech representations from each of the 4864 English and Muruwari utterances using the SpeechBrain toolkit 
+	2. Perform 5000 iter­ations of training and evaluating logistic regres­sion classifiers. At each iteration:
+		1. shuffle the data
+		2. select 20% of the data for the hold out testing dataset and leave the rest from the training set.
+			⁃ select 1, 5, 10, 25, and 50 utterances per language
+			⁃ Train separate logistic regression classifiers for each of the 6 languages
+	3. Measure the performance of each of the 5 models + ALL using the F1 score on the same testing data set made in 2.2
+
+ASR Training
+Preprocessing Steps
+	1. The transcriptions were automat­ically converted to all upper-case to normalize the text to a 27-character vocabulary that matches vocabulary with which the wav2vec 2.0 Robust model was origi­nally trained.
+
+	NOTE: not re-using the original vocabulary required signifi­cantly more fine-tuning data to achieve the same performance.
+
+	2. Ex­tracted the speech regions into individual 16-bit 16 kHz .wav files
+	3. All the transcriptions for the English utterances into a single tab-delimited file
+
+
+
+ASR Model Fine-Tuning 
+• Base Model Robust wave2vec 2.0
+• 50 epochs
+• evaluation every 5 epochs
+• early-stopping patience of 3 evaluations
+• train script available in GitHub repo
+• Opted for a bi-gram model
+
+
+Model Flow
+	1.	Extract Speech representations using the SpeechBrain toolkit
+	2.	Fine-Tune the Robust wav2vec 2.0 over 50 epochs
+
