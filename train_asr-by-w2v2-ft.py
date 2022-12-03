@@ -226,7 +226,7 @@ dataset = process_data(dataset, processor)
 logging.set_verbosity(20)
 
 n_epochs = 50
-batch_size = 32
+batch_size = 8
 
 # How many epochs between evals?
 eps_b_eval = 5
