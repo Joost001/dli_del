@@ -7,9 +7,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1 
 #SBATCH --gres=gpu:A100.80gb:1 
-#SBATCH --mem=8G
+#SBATCH --mem=64G
 #SBATCH --export=ALL 
-#SBATCH --time=0-01:00:00 
+#SBATCH --time=0-00:30:00 
 #
 set echo 
 umask 0022 
@@ -19,6 +19,7 @@ nvidia-smi
 ## Load the necessary modules
 module load gnu10
 module load python
+module load cuda
 
 ## Execute your script
 run() {
