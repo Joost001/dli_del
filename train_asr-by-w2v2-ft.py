@@ -225,13 +225,8 @@ dataset = process_data(dataset, processor)
 # Set logging to 'INFO' or else progress bar gets hidden
 logging.set_verbosity(20)
 
-<<<<<<< HEAD
-n_epochs = 50
-batch_size = 8
-=======
 n_epochs = 20
 batch_size = 4
->>>>>>> a7210816c2dde6253eea78061057d683d1dc9d15
 
 # How many epochs between evals?
 eps_b_eval = 5
