@@ -30,8 +30,7 @@ def ffmpeg(full_path_infile: str, full_path_outfile: str, log_file_name: str):
     cmd = 'ffmpeg -n -i  "{infile}" -ar 16000 "{outfile}" >> "{log_file}" 2>&1'.format(
         infile=full_path_infile, outfile=full_path_outfile, log_file=log_file_name)
     os.system(cmd)
-    assert os.path.exists(
-        full_path_outfile), 'FAIL ON FILE: ' + full_path_infile
+    assert os.path.exists(full_path_outfile), 'FAIL ON FILE: ' + full_path_infile
 
 
 def ffmpeg_timestamps(full_path_infile: str, full_path_outfile: str, start, end, log_file_name):
@@ -45,8 +44,9 @@ def ffmpeg_timestamps(full_path_infile: str, full_path_outfile: str, start, end,
     cmd = 'ffmpeg -n -i "{infile}" -ss {start} -to {end} -ar 16000 "{outfile}" > "{log_file}" 2>&1'.format(
         infile=full_path_infile, start=start, end=end, log_file=log_file_name, outfile=full_path_outfile)
     os.system(cmd)
-    assert os.path.exists(
-        full_path_outfile), 'FAIL ON FILE: ' + full_path_infile
+    if not os.path.exists(full_path_outfile):
+        print('FAIL ON FILE: ' + full_path_infile + '\n ' + log_file_name)
+    # assert os.path.exists(full_path_outfile), 'FAIL ON FILE: ' + full_path_infile + '\n ' + log_file_name
 
 
 def mkdir_if_dne(target_dir):
