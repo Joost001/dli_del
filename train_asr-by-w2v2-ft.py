@@ -222,7 +222,7 @@ def main(pretrained_model, output_dir, train_tsv, eval_tsv, use_target_vocab, hf
 if __name__ == '__main__':
     main(pretrained_model="facebook/wav2vec2-large-robust-ft-swbd-300h",
          output_dir='./data/asr-temp',
-         train_tsv='./data/wav_split_gold/train.tsv',
-         eval_tsv='./data/wav_split_gold/eval.tsv',
+         train_tsv='./data/processed/Train_1_Data/train.tsv',
+         eval_tsv='./data/processed/Train_1_Data/eval.tsv',
          use_target_vocab=True,
          hft_logging=40)
